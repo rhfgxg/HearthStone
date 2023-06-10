@@ -160,7 +160,7 @@ QString Cards::return_career()  // 返回职业
     return career;
 }
 
-int Cards::return_size()     // 返回卡组现有卡牌数量
+int Cards::size_cards()     // 返回卡组现有卡牌数量
 {
     return cardss.size();
 }
@@ -188,22 +188,22 @@ void Cards::save()   // 将卡组存入数据库
                           "'%14', '%15', '%16', '%17', '%18', '%19', '%20', '%21', '%22', '%23', "
                           "'%24', '%25', '%26', '%27', '%28', '%29', '%30', '%31', '32%', '33%'"
                           ")")
-                    .arg(cards_id).arg(cards_name).arg(career)
-                    .arg((*(cardss.begin()+0)).return_id()).arg((*(cardss.begin()+1)).return_id())
-                    .arg((*(cardss.begin()+2)).return_id()).arg((*(cardss.begin()+3)).return_id())
-                    .arg((*(cardss.begin()+4)).return_id()).arg((*(cardss.begin()+5)).return_id())
-                    .arg((*(cardss.begin()+6)).return_id()).arg((*(cardss.begin()+7)).return_id())
-                    .arg((*(cardss.begin()+8)).return_id()).arg((*(cardss.begin()+9)).return_id())
-                    .arg((*(cardss.begin()+10)).return_id()).arg((*(cardss.begin()+11)).return_id())
-                    .arg((*(cardss.begin()+12)).return_id()).arg((*(cardss.begin()+13)).return_id())
-                    .arg((*(cardss.begin()+14)).return_id()).arg((*(cardss.begin()+15)).return_id())
-                    .arg((*(cardss.begin()+16)).return_id()).arg((*(cardss.begin()+17)).return_id())
-                    .arg((*(cardss.begin()+18)).return_id()).arg((*(cardss.begin()+19)).return_id())
-                    .arg((*(cardss.begin()+20)).return_id()).arg((*(cardss.begin()+21)).return_id())
-                    .arg((*(cardss.begin()+22)).return_id()).arg((*(cardss.begin()+23)).return_id())
-                    .arg((*(cardss.begin()+24)).return_id()).arg((*(cardss.begin()+25)).return_id())
-                    .arg((*(cardss.begin()+26)).return_id()).arg((*(cardss.begin()+27)).return_id())
-                    .arg((*(cardss.begin()+28)).return_id()).arg((*(cardss.begin()+29)).return_id());
+                    .arg(cards_id, cards_name, career)
+                    .arg((*(cardss.begin()+0)).return_id(), (*(cardss.begin()+1)).return_id())
+                    .arg((*(cardss.begin()+2)).return_id(), (*(cardss.begin()+3)).return_id())
+                    .arg((*(cardss.begin()+4)).return_id(), (*(cardss.begin()+5)).return_id())
+                    .arg((*(cardss.begin()+6)).return_id(), (*(cardss.begin()+7)).return_id())
+                    .arg((*(cardss.begin()+8)).return_id(), (*(cardss.begin()+9)).return_id())
+                    .arg((*(cardss.begin()+10)).return_id(),(*(cardss.begin()+11)).return_id())
+                    .arg((*(cardss.begin()+12)).return_id(), (*(cardss.begin()+13)).return_id())
+                    .arg((*(cardss.begin()+14)).return_id(), (*(cardss.begin()+15)).return_id())
+                    .arg((*(cardss.begin()+16)).return_id(), (*(cardss.begin()+17)).return_id())
+                    .arg((*(cardss.begin()+18)).return_id(), (*(cardss.begin()+19)).return_id())
+                    .arg((*(cardss.begin()+20)).return_id(), (*(cardss.begin()+21)).return_id())
+                    .arg((*(cardss.begin()+22)).return_id(), (*(cardss.begin()+23)).return_id())
+                    .arg((*(cardss.begin()+24)).return_id(), (*(cardss.begin()+25)).return_id())
+                    .arg((*(cardss.begin()+26)).return_id(), (*(cardss.begin()+27)).return_id())
+                    .arg((*(cardss.begin()+28)).return_id(), (*(cardss.begin()+29)).return_id());
     query.exec(str); //执行插入操作
 }
 

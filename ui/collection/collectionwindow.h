@@ -35,11 +35,10 @@ private:
     void connect_card();    // 卡牌按钮关联
 
 private slots:
-    void on_Button_save_cards_clicked();    // 保存卡组按钮
-
     void on_Button_last_clicked();  // 上一页按钮
-
     void on_Button_next_clicked();  // 下一页按钮
+
+    void on_Button_save_cards_clicked();    // 保存卡组按钮
 
     void on_pushButton_back_clicked();    // 返回按钮
 

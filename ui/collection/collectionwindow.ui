@@ -198,6 +198,9 @@
          <height>300</height>
         </size>
        </property>
+       <property name="mouseTracking">
+        <bool>false</bool>
+       </property>
        <property name="text">
         <string/>
        </property>
@@ -377,7 +380,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
           <height>930</height>
          </size>
         </property>
-        <widget class="QWidget" name="">
+        <widget class="QWidget" name="layoutWidget">
          <property name="geometry">
           <rect>
            <x>0</x>

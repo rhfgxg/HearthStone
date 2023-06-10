@@ -1,0 +1,13 @@
+<RCC>
+    <qresource prefix="/image/hero">
+        <file>Anduin_D.png</file>
+        <file>BlizzCon_2011_Thrall_Final_D.png</file>
+        <file>Garrosh_D.png</file>
+        <file>Guldan_Final_2_D.png.png</file>
+        <file>Hero_portrait.png.png</file>
+        <file>Rexxar_D.png</file>
+        <file>Uther_D.png</file>
+        <file>valeeraGR_D.png</file>
+        <file>w2_059_D.png</file>
+    </qresource>
+</RCC>

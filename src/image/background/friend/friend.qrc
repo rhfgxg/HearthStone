@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/image/friend">
+        <file>Emote_Bubbles.png</file>
+        <file>friend.qrc</file>
+        <file>Speech_Bubbles_BL.png</file>
+        <file>Speech_Bubbles_BR.png</file>
+        <file>Speech_BubblesUL.png</file>
+        <file>Speech_BubblesUR.png</file>
+    </qresource>
+</RCC>

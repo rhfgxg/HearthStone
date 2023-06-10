@@ -6,6 +6,8 @@ autoWindow::autoWindow(QWidget *parent) :
     ui(new Ui::autoWindow)
 {
     ui->setupUi(this);
+    setWindowFlags(Qt::FramelessWindowHint | Qt::Tool | Qt::WindowStaysOnTopHint);  // 去掉标题栏,去掉工具栏，窗口置顶
+
 }
 
 autoWindow::~autoWindow()

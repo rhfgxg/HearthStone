@@ -16,9 +16,10 @@ void sql_link();
 
 int main(int argc, char *argv[])
 {
-    sql_link(); // 链接数据库
-
     QApplication a(argc, argv);     // 软件生命进程
+
+    sql_link();     // 连接数据库
+
     Widget w;       // UI界面
     w.show();
 
@@ -37,11 +38,10 @@ void sql_link()
     bool ok = db.open();    // ·获取是否打开
     if (ok)
     {
-        // 链接成功时
+
     }
     else
     {
         qDebug()<<"打开失败："<<db.lastError().text(); // 返回数据库报错的原因
     }
-
 }

@@ -1,0 +1,18 @@
+<RCC>
+    <qresource prefix="/image/athletics">
+        <file>DeckTooltip.png</file>
+        <file>Forge_Main.png</file>
+        <file>KeyGlowSide_TypeA.png</file>
+        <file>KeyGlowSide_TypeA2.png</file>
+        <file>KeyGlowSide_TypeA3.png</file>
+        <file>KeyGlowSide_TypeB.png</file>
+        <file>KeyGlowSide_TypeC.png</file>
+        <file>KeyGlowSide_TypeD.png</file>
+        <file>KeyGlowSide_TypeE.png</file>
+        <file>KeyGlowSide_TypeF.png</file>
+        <file>KeyGlowSide_TypeG.png</file>
+        <file>KeyGlowSide_TypeH.png</file>
+        <file>Medals.png</file>
+        <file>MetalGlow.png</file>
+    </qresource>
+</RCC>

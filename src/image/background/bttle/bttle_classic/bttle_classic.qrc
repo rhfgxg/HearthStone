@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/image/bttle_classic">
+        <file>Board_HeroTray.png</file>
+        <file>FRAME.png</file>
+        <file>GameplayArea_D.png</file>
+        <file>STR_FRAME.png</file>
+        <file>STR_GameplayArea_D.png</file>
+        <file>STR_GroundCorners.png</file>
+        <file>WickRope.png</file>
+    </qresource>
+</RCC>

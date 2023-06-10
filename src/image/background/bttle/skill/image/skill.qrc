@@ -1,0 +1,26 @@
+<RCC>
+    <qresource prefix="/image/skill">
+        <file>400px-Art_VAN_CS2_102_H3.png</file>
+        <file>400px-Art_VAN_EX1_tk33.png</file>
+        <file>400px-Art_VAN_HERO_01bp.png</file>
+        <file>400px-Art_VAN_HERO_01bp2.png</file>
+        <file>400px-Art_VAN_HERO_02bp.png</file>
+        <file>400px-Art_VAN_HERO_02bp2.png</file>
+        <file>400px-Art_VAN_HERO_03bp.png</file>
+        <file>400px-Art_VAN_HERO_03bp2.png</file>
+        <file>400px-Art_VAN_HERO_04bp.png</file>
+        <file>400px-Art_VAN_HERO_04bp2.png</file>
+        <file>400px-Art_VAN_HERO_05bp.png</file>
+        <file>400px-Art_VAN_HERO_05bp2.png</file>
+        <file>400px-Art_VAN_HERO_06bp.png</file>
+        <file>400px-Art_VAN_HERO_06bp2.png</file>
+        <file>400px-Art_VAN_HERO_07bp.png</file>
+        <file>400px-Art_VAN_HERO_07bp2.png</file>
+        <file>400px-Art_VAN_HERO_08bp.png</file>
+        <file>400px-Art_VAN_HERO_08bp2.png</file>
+        <file>400px-Art_VAN_HERO_09bp.png</file>
+        <file>400px-Art_VAN_HERO_09bp2.png</file>
+        <file>400px-Art_VAN_HERO_10bp.png</file>
+        <file>400px-Art_VAN_HERO_10bp2.png</file>
+    </qresource>
+</RCC>

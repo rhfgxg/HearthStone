@@ -1,0 +1,114 @@
+<RCC>
+    <qresource prefix="/image/battle/permanent/card_set">
+        <file>card_set/Card_Back_Default_D.png</file>
+        <file>card_set/Card_InHand_Fatigue.png</file>
+        <file>card_set/DeckSlotGlow1.png</file>
+    </qresource>
+    <qresource prefix="/image/battle/permanent/key_word">
+        <file>kay_word/Deathrattle_RedSkull.png</file>
+        <file>kay_word/Deathrattle_Skull.png</file>
+        <file>kay_word/Deck_X.png</file>
+        <file>kay_word/FrozenFrost_D.png</file>
+        <file>kay_word/Secret_D.png</file>
+        <file>kay_word/SkullA.png</file>
+        <file>kay_word/Trigger.png</file>
+        <file>kay_word/Zzz.png</file>
+    </qresource>
+    <qresource prefix="/image/battle/permanent/mana">
+        <file>mana/BluePlasma1.png</file>
+        <file>mana/DeckTray_CardBar_Echo.png</file>
+        <file>mana/DeckTray_CardBars.png</file>
+        <file>mana/Gem_LockMana_D.png</file>
+        <file>mana/Gem_LockMana_Echo.png</file>
+        <file>mana/Gem_Mana_D.png</file>
+        <file>mana/HeroXpBar.png</file>
+        <file>mana/plus1v3.png</file>
+        <file>mana/TextInlineImages.png</file>
+        <file>mana/UnrankedSilhouette.png</file>
+    </qresource>
+    <qresource prefix="/image/battle/permanent/mouse">
+        <file>mouse/down.cur</file>
+        <file>mouse/downhand.png</file>
+        <file>mouse/drag.cur</file>
+        <file>mouse/grabhand.png</file>
+        <file>mouse/hand.cur</file>
+        <file>mouse/hand.png</file>
+    </qresource>
+    <qresource prefix="/image/battle/permanent/outcome">
+        <file>outcome/Defeat.png</file>
+        <file>outcome/Victory.png</file>
+    </qresource>
+    <qresource prefix="/image/battle/permanent/prepping">
+        <file>prepping/DeckPickerHeroSilhouette.png</file>
+        <file>prepping/HeroKeyholeBackings.png</file>
+        <file>prepping/HeroPicker_Friendly.png</file>
+        <file>prepping/HeroPicker_Practice.png</file>
+        <file>prepping/HeroPicker_Tournament.png</file>
+        <file>prepping/History_BigCard_Arrow.png</file>
+        <file>prepping/History_BigCard_Arrow_Blue.png</file>
+        <file>prepping/History_BigCard_Swords_Blue.png</file>
+        <file>prepping/History_BigCard_Swords_Red.png</file>
+        <file>prepping/History_HeroBanners.png</file>
+        <file>prepping/KeyHoleGlow1.png</file>
+        <file>prepping/LoadingBar.png</file>
+        <file>prepping/MatchMaker.png</file>
+        <file>prepping/Practice_Tray.png</file>
+    </qresource>
+    <qresource prefix="/image/battle/permanent/round">
+        <file>round/Board_EndTurnButton.png</file>
+        <file>round/Board_EndTurnButton_N.png</file>
+        <file>round/Button_Back_Bracket.png</file>
+        <file>round/Button_Back_V3.png</file>
+        <file>round/Button_Floaty2.png</file>
+        <file>round/EndTurnHighlightMask.png</file>
+        <file>round/TurnElements.png</file>
+    </qresource>
+    <qresource prefix="/image/battle/permanent/hero">
+        <file>hero/AllyPartsEdgeGlows.png</file>
+        <file>hero/Armor_D.png</file>
+        <file>hero/attacktexture.png</file>
+        <file>hero/Board_FrameSubHero.png</file>
+        <file>hero/End Game_Crater.png</file>
+        <file>hero/Gem_Health_Premium.png</file>
+        <file>hero/healthtexture.png</file>
+        <file>hero/HeroBackplateA.png</file>
+        <file>hero/HeroBackplateB.png</file>
+        <file>hero/HeroBurn1.png</file>
+        <file>hero/HeroDeathCracks.png</file>
+        <file>hero/HeroFrame.png</file>
+        <file>hero/HeroFrozen_D.png</file>
+        <file>hero/HeroMask1.png</file>
+        <file>hero/HeroSummonForge.png</file>
+        <file>hero/History_HeroFrame.png</file>
+        <file>hero/LevelUpHeroGlow.png</file>
+    </qresource>
+    <qresource prefix="/image/battle/permanent/minion">
+        <file>minion/AllyPartsEdgeGlows.png</file>
+        <file>minion/ally_taunt_d.png</file>
+        <file>minion/ally_taunt_gold.png</file>
+        <file>minion/attacktexture.png</file>
+        <file>minion/Card_InPlay_AllyFrame.png</file>
+        <file>minion/Card_InPlay_AllyFrame_Gold.png</file>
+        <file>minion/Gem_Attack_Premium.png</file>
+        <file>minion/Gem_Health_Premium.png</file>
+        <file>minion/healthtexture.png</file>
+    </qresource>
+    <qresource prefix="/image/battle/permanent/spell">
+        <file>spell/History_Secret_Hunter.png</file>
+        <file>spell/History_Secret_Hunter_Runes.png</file>
+        <file>spell/History_Secret_Mage.png</file>
+        <file>spell/History_Secret_Mage_Runes.png</file>
+        <file>spell/History_Secret_Paladin.png</file>
+        <file>spell/History_Secret_Paladin_Runes.png</file>
+    </qresource>
+    <qresource prefix="/image/battle/permanent/weapons">
+        <file>weapons/AllyPartsEdgeGlows.png</file>
+        <file>weapons/Armor_D.png</file>
+        <file>weapons/attacktexture.png</file>
+        <file>weapons/Card_Inplay_Weapon_BackBroken.png</file>
+        <file>weapons/Card_Inplay_Weapon_Shadow.png</file>
+        <file>weapons/Card_Inplay_Weapon_SheatheDome.png</file>
+        <file>weapons/Card_Inplay_Weapon_SheatheDome_Premium.png</file>
+        <file>weapons/WeaponSummonRed.png</file>
+    </qresource>
+</RCC>

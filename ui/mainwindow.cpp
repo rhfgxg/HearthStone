@@ -6,11 +6,21 @@
 #include "ui/collection/collectionwindow.h"     // 收藏界面
 #include "ui/settingAndFriend/friendwindow.h"   // 好友界面
 
+#include <QScreen>  // 根据屏幕比例设置窗口大小
+
 mainWindow::mainWindow(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::mainWindow)
 {
     ui->setupUi(this);
+
+    setWindowFlags(Qt::FramelessWindowHint | Qt::Tool | Qt::WindowStaysOnTopHint);  // 去掉标题栏,去掉工具栏，窗口置顶
+    resize(QGuiApplication::primaryScreen()->availableSize() * 1);    // 根据屏幕比例设置窗口大小，将窗口大小设置为屏幕大小的 1/1=1
+
+    // 背景图
+    QPalette pal =this->palette();
+    pal.setBrush(QPalette::Window, QBrush(QPixmap(":/image/main/TheBox_Top.png")));
+    setPalette(pal);
 }
 
 mainWindow::~mainWindow()

@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/image/store">
+        <file>QuestRewards.png</file>
+        <file>RewardBanner.png</file>
+        <file>StoreMain.png</file>
+        <file>StoreMainV2.png</file>
+        <file>StorePurchaseAuth.png</file>
+        <file>Toasts.png</file>
+    </qresource>
+</RCC>

@@ -1,0 +1,33 @@
+<RCC>
+    <qresource prefix="/image/main">
+        <file>BookBackV2.png</file>
+        <file>BookCoverLatch_Silhouette.png</file>
+        <file>BookCoverV2.png</file>
+        <file>BookCoverV2_lock.png</file>
+        <file>CardExchange_Info.png</file>
+        <file>DustJar_Icon.png</file>
+        <file>Forge_Info.png</file>
+        <file>Forge_PreInfo.png</file>
+        <file>Forge_PreInfoV2.png</file>
+        <file>GoldCoin.png</file>
+        <file>LoadingScreen.png</file>
+        <file>LoadingScreenGlow.png</file>
+        <file>MassDisenchant.png</file>
+        <file>Pack_icon.png</file>
+        <file>PackStandardShadow.png</file>
+        <file>PreTutorialFrame.png</file>
+        <file>QuestBang.png</file>
+        <file>QuestLog.png</file>
+        <file>QuestLogButtonSilhouette.png</file>
+        <file>QuestLogShadow.png</file>
+        <file>RewardBanner.png</file>
+        <file>RewardBannerPart2.png</file>
+        <file>ScreenSelector.bmp</file>
+        <file>TheBox_Button_Glows.png</file>
+        <file>TheBox_Button_Shadows.png</file>
+        <file>TheBox_Frame.png</file>
+        <file>TheBox_Glowring.png</file>
+        <file>TheBox_Table.png</file>
+        <file>TheBox_Top.png</file>
+    </qresource>
+</RCC>

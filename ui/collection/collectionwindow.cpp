@@ -5,6 +5,7 @@
 
 // UI库
 #include <QIcon>    // 为按钮添加图片
+#include <QScreen>  // 根据屏幕比例设置窗口大小
 
 // 功能库
 #include <QDebug>   // 终端输出
@@ -20,6 +21,11 @@ collectionWindow::collectionWindow(QWidget *parent) :       // 构造函数
     ui(new Ui::collectionWindow)
 {
     ui->setupUi(this);
+
+    setWindowFlags(Qt::FramelessWindowHint | Qt::Tool | Qt::WindowStaysOnTopHint);  // 去掉标题栏,去掉工具栏，窗口置顶
+    resize(QGuiApplication::primaryScreen()->availableSize() * 1);    // 根据屏幕比例设置窗口大小，将窗口大小设置为屏幕大小的 1/1=1。
+
+
 
     page = 1;   // 初始化页面计数器
     for(int i=0; i<8; ++i)  // 初始化计时器
@@ -51,7 +57,7 @@ collectionWindow::~collectionWindow()       //析构函数
 
 void collectionWindow::on_Button_save_cards_clicked()    // 保存卡组按钮
 {
-    if(cards.return_size() < 30)
+    if(cards.size_cards() < 30)
     {
         // 卡组数量不够，报错，退出函数
         qDebug("卡组数量不足30张");
@@ -140,7 +146,7 @@ void collectionWindow::Button_card1_clicked()     // 卡牌按钮槽函数
 
         // 更新页面当前卡牌数量
         // QString::number 将整型转换成字符串
-        QString size = "卡牌数量" + QString::number(cards.return_size()) + "/30";
+        QString size = "卡牌数量" + QString::number(cards.size_cards()) + "/30";
         ui->label_size->setText(size);
 
         // 添加卡组按钮文本
@@ -167,7 +173,7 @@ void collectionWindow::Button_card2_clicked()     // 卡牌按钮槽函数
 
         // 更新页面当前卡牌数量
         // QString::number 将整型转换成字符串
-        QString size = "卡牌数量" + QString::number(cards.return_size()) + "/30";
+        QString size = "卡牌数量" + QString::number(cards.size_cards()) + "/30";
         ui->label_size->setText(size);
 
         // 更新卡组按钮文本
@@ -194,7 +200,7 @@ void collectionWindow::Button_card3_clicked()     // 卡牌按钮槽函数
 
         // 更新页面当前卡牌数量
         // QString::number 将整型转换成字符串
-        QString size = "卡牌数量" + QString::number(cards.return_size()) + "/30";
+        QString size = "卡牌数量" + QString::number(cards.size_cards()) + "/30";
         ui->label_size->setText(size);
 
         // 更新卡组按钮文本
@@ -221,7 +227,7 @@ void collectionWindow::Button_card4_clicked()     // 卡牌按钮槽函数
 
         // 更新页面当前卡牌数量
         // QString::number 将整型转换成字符串
-        QString size = "卡牌数量" + QString::number(cards.return_size()) + "/30";
+        QString size = "卡牌数量" + QString::number(cards.size_cards()) + "/30";
         ui->label_size->setText(size);
 
         // 更新卡组按钮文本
@@ -248,7 +254,7 @@ void collectionWindow::Button_card5_clicked()     // 卡牌按钮槽函数
 
         // 更新页面当前卡牌数量
         // QString::number 将整型转换成字符串
-        QString size = "卡牌数量" + QString::number(cards.return_size()) + "/30";
+        QString size = "卡牌数量" + QString::number(cards.size_cards()) + "/30";
         ui->label_size->setText(size);
 
         // 更新卡组按钮文本
@@ -275,7 +281,7 @@ void collectionWindow::Button_card6_clicked()     // 卡牌按钮槽函数
 
         // 更新页面当前卡牌数量
         // QString::number 将整型转换成字符串
-        QString size = "卡牌数量" + QString::number(cards.return_size()) + "/30";
+        QString size = "卡牌数量" + QString::number(cards.size_cards()) + "/30";
         ui->label_size->setText(size);
 
         // 更新卡组按钮文本
@@ -302,7 +308,7 @@ void collectionWindow::Button_card7_clicked()     // 卡牌按钮槽函数
 
         // 更新页面当前卡牌数量
         // QString::number 将整型转换成字符串
-        QString size = "卡牌数量" + QString::number(cards.return_size()) + "/30";
+        QString size = "卡牌数量" + QString::number(cards.size_cards()) + "/30";
         ui->label_size->setText(size);
 
         // 更新卡组按钮文本
@@ -329,7 +335,7 @@ void collectionWindow::Button_card8_clicked()     // 卡牌按钮槽函数
 
         // 更新页面当前卡牌数量
         // QString::number 将整型转换成字符串
-        QString size = "卡牌数量" + QString::number(cards.return_size()) + "/30";
+        QString size = "卡牌数量" + QString::number(cards.size_cards()) + "/30";
         ui->label_size->setText(size);
 
         // 更新卡组按钮文本
@@ -403,17 +409,23 @@ void collectionWindow::Button_cards_clicked()    // 卡组按钮槽
     // 修改对应按钮文本
     // 修改后续按钮文本（全部前移一位）
     QString btnName = QObject::sender()->objectName();  // 获取按钮对象名
-    int index = (btnName.mid(btnName.size()-2,2)).toInt();  // 拆分对象名，区分是哪个按钮
-    cards.out(index-1);
+    unsigned index = (btnName.mid(btnName.size()-2,2)).toInt();  // 拆分对象名，区分是哪个按钮
+
+    if (text.size() < index)    // 如果点击的按钮没有对应卡牌，结束槽函数
+    {
+        return;
+    }
+
+    cards.out(index-1); // 移出卡牌
 
     text.erase(text.begin()+index-1);   // 删除对应下标的文本
     update_text();  // 刷新按钮文本
-    butCards[cards.return_size()]->setText(""); // 将最后一个按钮文本清空
+    butCards[cards.size_cards()]->setText(""); // 将最后一个按钮文本清空
 
 
     // 更新页面当前卡牌数量
     // QString::number 将整型转换成字符串
-    QString size = "卡牌数量" + QString::number(cards.return_size()) + "/30";
+    QString size = "卡牌数量" + QString::number(cards.size_cards()) + "/30";
     ui->label_size->setText(size);
 
 }
@@ -424,10 +436,11 @@ void collectionWindow::update_image() // 初始化八张图片
     QIcon myicon; //新建QIcon对象
     for(int i=0; i<8; ++i)
     {
+        QString name = (card.begin()+((page-1)*8+i))->return_id();
+        QString url = ":/image/calssic/" + name +".png";   // 拼接地址
+
         // page*8+i page是在收藏中的页面数（所有卡牌 8张一段 分段以后的下标）+i 是在当前页的下标
-        std::string url = ":/image/initial/src/image/" + (card.begin()+((page-1)*8+i))->return_id().toStdString()+".png";   // 拼接地址
-        // string.c_str()将 string转换成 c字符串
-        myicon.addFile(tr(url.c_str())); //让QIcon对象指向想要的图标
+        myicon.addFile(url); //让QIcon对象指向想要的图标
         butCard[i]->setIcon(myicon); //给按钮添加图标
         butCard[i]->setIconSize(QSize(174,298));//重置图标大小
     }
@@ -435,7 +448,7 @@ void collectionWindow::update_image() // 初始化八张图片
 
 void collectionWindow::update_text()   // 刷新所有卡组按钮的文本
 {
-    for (int i=0; i<cards.return_size(); ++i)   // 将所有按钮（有文本）刷新
+    for (int i=0; i<cards.size_cards(); ++i)   // 将所有按钮（有文本）刷新
     {
         butCards[i]->setText(*(text.begin()+i));
     }
@@ -449,4 +462,3 @@ void collectionWindow::on_pushButton_back_clicked()   // 返回按钮
     mainWindow * mainWin = new mainWindow;
     mainWin->show();
 }
-

@@ -8,6 +8,7 @@
 class Card   // 卡牌
 {
 public:
+    Card();
     Card(QString card_id);    // 传入 card_id 查询卡牌所有信息，创建对象
     void mana_update(int update);     // 费用更新
 

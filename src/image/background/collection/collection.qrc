@@ -1,0 +1,20 @@
+<RCC>
+    <qresource prefix="/image/collection">
+        <file>CardExchange_base.png</file>
+        <file>CardGlowHover.png</file>
+        <file>CardGlowHover_epic.png</file>
+        <file>CardGlowHover_rare.png</file>
+        <file>DeckTrayV2.png</file>
+        <file>DustJar_Icon.png</file>
+        <file>GoldCoin.png</file>
+        <file>MinionCard_Echo.png</file>
+        <file>PackOpeningTray.png</file>
+        <file>QuestRewards.png</file>
+        <file>StoreBonus.png</file>
+        <file>StoreMainV2_GoldParts.png</file>
+    </qresource>
+    <qresource prefix="/image/collection/mouse">
+        <file>mouse/arrow_left.cur</file>
+        <file>mouse/arrow_right.cur</file>
+    </qresource>
+</RCC>

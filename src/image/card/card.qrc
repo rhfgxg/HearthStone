@@ -1,0 +1,47 @@
+<RCC>
+    <qresource prefix="/image/card">
+        <file>Card_Inhand_Ability_Druid.png</file>
+        <file>Card_Inhand_Ability_Hunter.png</file>
+        <file>Card_Inhand_Ability_Mage.png</file>
+        <file>Card_Inhand_Ability_Neutral.png</file>
+        <file>Card_Inhand_Ability_Paladin.png</file>
+        <file>Card_Inhand_Ability_Premium.png</file>
+        <file>Card_Inhand_Ability_Priest.png</file>
+        <file>Card_Inhand_Ability_Rogue.png</file>
+        <file>Card_Inhand_Ability_Shaman.png</file>
+        <file>Card_Inhand_Ability_Warlock.png</file>
+        <file>Card_Inhand_Ability_Warrior.png</file>
+        <file>Card_InHand_Ally_N.png</file>
+        <file>Card_InHand_BannerAtlas.png</file>
+        <file>Card_Inhand_D.png</file>
+        <file>Card_Inhand_Generic.png</file>
+        <file>Card_Inhand_Minion_Druid.png</file>
+        <file>Card_Inhand_Minion_Hunter.png</file>
+        <file>Card_Inhand_Minion_Mage.png</file>
+        <file>Card_Inhand_Minion_Paladin.png</file>
+        <file>Card_Inhand_Minion_Priest.png</file>
+        <file>Card_Inhand_Minion_Rogue.png</file>
+        <file>Card_Inhand_Minion_Shaman.png</file>
+        <file>Card_Inhand_Minion_Warrior.png</file>
+        <file>Card_Inhand_Premium.png</file>
+        <file>Card_InHand_Premium_BannerAtlas.png</file>
+        <file>Card_InHand_Premium_BannerAtlas_Spec.png</file>
+        <file>Card_Inhand_Premium_Spec.png</file>
+        <file>Card_Inhand_Warlock.png</file>
+        <file>Card_Inhand_Warlock_Gold.png</file>
+        <file>Card_Inhand_Weapon_Druid.png</file>
+        <file>Card_Inhand_Weapon_Hunter.png</file>
+        <file>Card_Inhand_Weapon_Mage.png</file>
+        <file>Card_Inhand_Weapon_Neutral.png</file>
+        <file>Card_Inhand_Weapon_Paladin.png</file>
+        <file>Card_Inhand_Weapon_Premium.png</file>
+        <file>Card_Inhand_Weapon_Premium_Spec.png</file>
+        <file>Card_Inhand_Weapon_Priest.png</file>
+        <file>Card_Inhand_Weapon_Rogue.png</file>
+        <file>Card_Inhand_Weapon_Shaman.png</file>
+        <file>Card_Inhand_Weapon_Warlock.png</file>
+        <file>Card_Inhand_Weapon_Warrior.png</file>
+        <file>ClassIcons.png</file>
+        <file>RarityGems.png</file>
+    </qresource>
+</RCC>

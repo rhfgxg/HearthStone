@@ -21,6 +21,11 @@
  * 8 card_description 牌面描述
 */
 
+Card::Card()    // 默认构造函数
+{
+
+}
+
 Card::Card(QString cardId)    // 构造函数，在创建卡组时调用
 {
     if(cardId == "")    // 检查待查询的是否是空

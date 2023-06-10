@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/image/logo">
+        <file>HearthstoneIcon_16x16.png</file>
+        <file>HearthstoneIcon_32x32.png</file>
+        <file>HearthstoneIcon_48x48.png</file>
+        <file>HearthstoneIcon_128x128.png</file>
+        <file>HearthstoneIcon_256x256.png</file>
+        <file>HearthstoneIcon_512x512.png</file>
+        <file>HearthstoneIcon_1024x1024.png</file>
+    </qresource>
+</RCC>

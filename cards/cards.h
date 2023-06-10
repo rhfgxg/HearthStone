@@ -24,7 +24,7 @@ public:
     void update_career(QString cards_career);   // 设置职业
 
     QString return_id();    // 返回卡组ID
-    int  return_size();   // 返回卡组现有卡牌数量
+    int  size_cards();   // 返回卡组现有卡牌数量
     QString return_career();    // 返回职业
 
     void save();    // 将卡组存入数据库

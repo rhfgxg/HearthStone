@@ -8,6 +8,7 @@
 
 // UI库
 #include <QIcon>    // 为按钮添加图片
+#include <QScreen>  // 根据屏幕比例设置窗口大小
 
 battlewindow::battlewindow(QWidget *parent) :   // 构造函数
     QWidget(parent),
@@ -15,29 +16,35 @@ battlewindow::battlewindow(QWidget *parent) :   // 构造函数
 {
     ui->setupUi(this);
 
+    setWindowFlags(Qt::FramelessWindowHint | Qt::Tool | Qt::WindowStaysOnTopHint);  // 去掉标题栏,去掉工具栏，窗口置顶
+    resize(QGuiApplication::primaryScreen()->availableSize() * 1);    // 根据屏幕比例设置窗口大小，将窗口大小设置为屏幕大小的 1/1=1。
+
     // 定义游戏进程类(空对象)
 
-    // 初始化 牌库按钮数组
-    but_card_sets[0] = ui->pushButton_card_set1;
-    but_card_sets[1] = ui->pushButton_card_set2;
-    // 设置牌库按钮悬停注释
-    but_card_sets[0]->setToolTip("剩余卡牌：30");
-    but_card_sets[1]->setToolTip("剩余卡牌：30");
+    // 初始化按钮
+    but_card_sets[0] = ui->pushButton_card_set1;    // 初始化 牌库按钮数组
+    but_card_sets[1] = ui->pushButton_card_set2;    // 初始化 牌库按钮数组
+    connect_minion1();  // 初始化并关联己方随从按钮
+    connect_minion2();  // 初始化并关联敌方随从按钮
+    connect_hands();    // 初始化己方手牌按钮
 
-    // 初始化并关联己方随从按钮
-    connect_minion1();
-
-    // 初始化并关联敌方随从按钮
-    connect_minion2();
-
-    // 初始化己方手牌按钮
-    connect_hands();
-
-    // 初始化己方手牌图片(3张)    崩
-    for (int i=1; i<4; ++i)
+    // 初始化图片
+    for (int i=1; i<5; ++i) // 初始化己方手牌图片(4张)
     {
-        update_hands_image(i);
+        update_hands1_image();  // 刷新图片
     }
+    for (int i=1; i<6; ++i) // 初始化敌方手牌图片(5张) 4张牌1张水晶
+    {
+        course.return_hands2().add(course.return_card_set2().draw_out());// 抽牌
+        update_hands2_image();
+    }
+    update_hero();  // 初始化双方英雄图片
+
+    // 初始化文本相关
+    but_card_sets[0]->setToolTip("剩余卡牌：30");    // 己方牌库按钮悬停注释
+    but_card_sets[1]->setToolTip("剩余卡牌：30");    // 对方牌库按钮悬停注释
+    // 初始化水晶文本
+    ui->lanel_mana->setText("水晶：" + QString::number(course.return_mana1()) + "/" + QString::number(course.return_Max_mana1()));
 }
 
 battlewindow::~battlewindow()
@@ -45,210 +52,51 @@ battlewindow::~battlewindow()
     delete ui;
 }
 
+/****************************************** 槽函数 ************************************/
 void battlewindow::on_pushButton_end_clicked()  // 切换回合按钮
 {
-    if (true != course.up_rounds()) // 如果切换失败
+    if (!course.up_rounds()) // 如果切换失败：平局
     {
         outcome = peace;    // 设置对战结果：平局
-        this->close();  // 关闭对战界面
 
+        this->close();  // 关闭对战界面
         // 打开平局界面
         peaceWindow * peaceWin = new peaceWindow;
         peaceWin->show();
     }
-    // 切换成功，什么也不做
+    // 切换成功
+    if(course.return_user())    // user1
+    {
+        update_hands1_image();  // 刷新 user1手牌图片
+        // 刷新 user1水晶文本
+        ui->lanel_mana->setText("水晶：" + QString::number(course.return_mana1()) + "/" + QString::number(course.return_Max_mana1()));
+        ui->pushButton_end->setText("回合结束");    // 修改回合结束按钮文本
+
+    }
+    else
+    {
+        update_hands2_image();  // 刷新 user1手牌图片
+
+        // 刷新 user2水晶文本
+        ui->lanel_mana->setText("水晶：" + QString::number(course.return_mana2()) + "/" + QString::number(course.return_Max_mana2()));
+        ui->pushButton_end->setText("对方回合");    // 修改回合结束按钮文本
+
+    }
 }
 
-/****************************************** 槽函数 ************************************/
+void battlewindow::on_pushButton_setting_clicked()  // 设置按钮
+{
+    outcome = defeat;   // 设置对战结果：失败
+    this->close();  // 关闭对战界面
+
+    // 打开失败界面
+    defeatWindow * defeatWin = new defeatWindow;
+    defeatWin->show();
+}
+
 // 多对象槽函数
-// 己方随从按钮槽：单击选择，双击取消选择
-void battlewindow::connect_minion1()    // 己方随从关联
-{
-    // 初始化按钮数组
-    but_minon1[0] = ui->pushButton_minion11;
-    but_minon1[1] = ui->pushButton_minion12;
-    but_minon1[2] = ui->pushButton_minion13;
-    but_minon1[3] = ui->pushButton_minion14;
-    but_minon1[4] = ui->pushButton_minion15;
-    but_minon1[5] = ui->pushButton_minion16;
-    but_minon1[6] = ui->pushButton_minion17;
-
-    // 点击按钮，开始计时
-    connect(but_minon1[0], SIGNAL(clicked(bool)), this, SLOT(but_minion1_clicked_begin()));
-    connect(but_minon1[1], SIGNAL(clicked(bool)), this, SLOT(but_minion1_clicked_begin()));
-    connect(but_minon1[2], SIGNAL(clicked(bool)), this, SLOT(but_minion1_clicked_begin()));
-    connect(but_minon1[3], SIGNAL(clicked(bool)), this, SLOT(but_minion1_clicked_begin()));
-    connect(but_minon1[4], SIGNAL(clicked(bool)), this, SLOT(but_minion1_clicked_begin()));
-    connect(but_minon1[5], SIGNAL(clicked(bool)), this, SLOT(but_minion1_clicked_begin()));
-    connect(but_minon1[6], SIGNAL(clicked(bool)), this, SLOT(but_minion1_clicked_begin()));
-
-    // 根据点击次数执行操作
-    connect(&minion1_cTime[0], SIGNAL(timeout()), this, SLOT(Button_minion11_clicked()));
-    connect(&minion1_cTime[1], SIGNAL(timeout()), this, SLOT(Button_minion12_clicked()));
-    connect(&minion1_cTime[2], SIGNAL(timeout()), this, SLOT(Button_minion13_clicked()));
-    connect(&minion1_cTime[3], SIGNAL(timeout()), this, SLOT(Button_minion14_clicked()));
-    connect(&minion1_cTime[4], SIGNAL(timeout()), this, SLOT(Button_minion15_clicked()));
-    connect(&minion1_cTime[5], SIGNAL(timeout()), this, SLOT(Button_minion16_clicked()));
-    connect(&minion1_cTime[6], SIGNAL(timeout()), this, SLOT(Button_minion17_clicked()));
-}
-
-void battlewindow::but_minion1_clicked_begin()     // 己方随从开始计时
-{
-    QString btnName = QObject::sender()->objectName();
-    int index = (btnName.mid(btnName.size()-1,1)).toInt();
-    switch(index)
-    {
-    case 1:
-    {
-        minion1_clicked_time[0]++;
-        minion1_cTime[0].start(200);
-        break;
-    }
-    case 2:
-    {
-        minion1_clicked_time[1]++;
-        minion1_cTime[1].start(200);
-        break;
-    }
-    case 3:
-    {
-        minion1_clicked_time[2]++;
-        minion1_cTime[2].start(200);
-        break;
-    }
-    case 4:
-    {
-        minion1_clicked_time[3]++;
-        minion1_cTime[3].start(200);
-        break;
-    }
-    case 5:
-    {
-        minion1_clicked_time[4]++;
-        minion1_cTime[4].start(200);
-        break;
-    }
-    case 6:
-    {
-        minion1_clicked_time[5]++;
-        minion1_cTime[5].start(200);
-        break;
-    }
-    case 7:
-    {
-        minion1_clicked_time[6]++;
-        minion1_cTime[6].start(200);
-    }
-    }
-}
-
-void battlewindow::Button_minion11_clicked()     // 己方随从1
-{
-    minion1_cTime[0].stop();
-    if(1 == minion1_clicked_time[0]){
-        // 单击选中
-        // 显示详情
-    }
-    else if(2 <= minion1_clicked_time[0])
-    {
-        // 双击取消
-
-    }
-    minion1_clicked_time[0]=0;
-}
-
-void battlewindow::Button_minion12_clicked()     // 己方随从2
-{
-    minion1_cTime[1].stop();
-    if(1 == minion1_clicked_time[1]){
-        // 单击选中
-        // 显示详情
-    }
-    else if(2 <= minion1_clicked_time[1])
-    {
-        // 双击取消
-
-    }
-    minion1_clicked_time[1]=0;
-}
-
-void battlewindow::Button_minion13_clicked()     // 己方随从3
-{
-    minion1_cTime[2].stop();
-    if(1 == minion1_clicked_time[2]){
-        // 单击选中
-        // 显示详情
-    }
-    else if(2 <= minion1_clicked_time[2])
-    {
-        // 双击取消
-
-    }
-    minion1_clicked_time[2]=0;
-}
-
-void battlewindow::Button_minion14_clicked()     // 己方随从4
-{
-    minion1_cTime[3].stop();
-    if(1 == minion1_clicked_time[3]){
-        // 单击选中
-        // 显示详情
-    }
-    else if(2 <= minion1_clicked_time[3])
-    {
-        // 双击取消
-
-    }
-    minion1_clicked_time[3]=0;
-}
-
-void battlewindow::Button_minion15_clicked()     // 己方随从5
-{
-    minion1_cTime[4].stop();
-    if(1 == minion1_clicked_time[4]){
-        // 单击选中
-        // 显示详情
-    }
-    else if(2 <= minion1_clicked_time[4])
-    {
-        // 双击取消
-
-    }
-    minion1_clicked_time[4]=0;
-}
-
-void battlewindow::Button_minion16_clicked()     // 己方随从6
-{
-    minion1_cTime[5].stop();
-    if(1 == minion1_clicked_time[5]){
-        // 单击选中
-        // 显示详情
-    }
-    else if(2 <= minion1_clicked_time[5])
-    {
-        // 双击取消
-
-    }
-    minion1_clicked_time[5]=0;
-}
-
-void battlewindow::Button_minion17_clicked()     // 己方随从7
-{
-    minion1_cTime[6].stop();
-    if(1 == minion1_clicked_time[6]){
-        // 单击选中
-        // 显示详情
-    }
-    else if(2 <= minion1_clicked_time[6])
-    {
-        // 双击取消
-
-    }
-    minion1_clicked_time[6]=0;
-}
-
 // 敌方随从按钮槽
-// 点击选择目标，悬停显示详情
+// 点击选择目标
 void battlewindow::connect_minion2()    // 敌方随从关联
 {
     // 初始化数组
@@ -275,290 +123,180 @@ void battlewindow::connect_minion2()    // 敌方随从关联
 //    connect(but_minon2[6], SIGNAL(clicked(bool)), this, SLOT(but_minion2_clicked()));
 }
 
-void battlewindow::but_minion2_clicked()     // 敌方随从
+void battlewindow::but_minion2_clicked()     // 敌方随从按钮槽
+{
+
+}
+
+// 己方随从按钮槽：单击选择，双击取消选择
+void battlewindow::connect_minion1()    // 己方随从关联
+{
+    // 初始化按钮数组
+    but_minon1[0] = ui->pushButton_minion11;
+    but_minon1[1] = ui->pushButton_minion12;
+    but_minon1[2] = ui->pushButton_minion13;
+    but_minon1[3] = ui->pushButton_minion14;
+    but_minon1[4] = ui->pushButton_minion15;
+    but_minon1[5] = ui->pushButton_minion16;
+    but_minon1[6] = ui->pushButton_minion17;
+
+    // 点击按钮
+    connect(but_minon1[0], SIGNAL(clicked(bool)), this, SLOT(but_minion1_clicked()));
+    connect(but_minon1[1], SIGNAL(clicked(bool)), this, SLOT(but_minion1_clicked()));
+    connect(but_minon1[2], SIGNAL(clicked(bool)), this, SLOT(but_minion1_clicked()));
+    connect(but_minon1[3], SIGNAL(clicked(bool)), this, SLOT(but_minion1_clicked()));
+    connect(but_minon1[4], SIGNAL(clicked(bool)), this, SLOT(but_minion1_clicked()));
+    connect(but_minon1[5], SIGNAL(clicked(bool)), this, SLOT(but_minion1_clicked()));
+    connect(but_minon1[6], SIGNAL(clicked(bool)), this, SLOT(but_minion1_clicked()));
+
+}
+
+void battlewindow::but_minion1_clicked()     // 己方随从槽函数
 {
 
 }
 
 // 手牌按钮槽
 // 单击查看，双击打出
-void battlewindow::connect_hands()  // 手牌按钮关联
+void battlewindow::connect_hands()  // 己方手牌按钮关联
 {
     // 初始化手牌按钮数组
-    but_hands[0] = ui->pushButton_hands1;
-    but_hands[1] = ui->pushButton_hands2;
-    but_hands[2] = ui->pushButton_hands3;
-    but_hands[3] = ui->pushButton_hands4;
-    but_hands[4] = ui->pushButton_hands5;
-    but_hands[5] = ui->pushButton_hands6;
-    but_hands[6] = ui->pushButton_hands7;
-    but_hands[7] = ui->pushButton_hands8;
-    but_hands[8] = ui->pushButton_hands9;
-    but_hands[9] = ui->pushButton_hands10;
+    but_hands1[0] = ui->pushButton_hands1;
+    but_hands1[1] = ui->pushButton_hands2;
+    but_hands1[2] = ui->pushButton_hands3;
+    but_hands1[3] = ui->pushButton_hands4;
+    but_hands1[4] = ui->pushButton_hands5;
+    but_hands1[5] = ui->pushButton_hands6;
+    but_hands1[6] = ui->pushButton_hands7;
+    but_hands1[7] = ui->pushButton_hands8;
+    but_hands1[8] = ui->pushButton_hands9;
+    but_hands1[9] = ui->pushButton_hands10;
 
-    // 点击按钮，开始计时
+    // 关联手牌槽函数
     for(int i=0; i<10; ++i)
     {
-        connect(but_hands[i], SIGNAL(clicked(bool)), this, SLOT(but_hands_clicked_begin()));
+        connect(but_hands1[i], SIGNAL(clicked(bool)), this, SLOT(Button_hands_clicked()));
     }
-//    connect(but_hands[0], SIGNAL(clicked(bool)), this, SLOT(but_hands_clicked_begin()));
-//    connect(but_hands[1], SIGNAL(clicked(bool)), this, SLOT(but_hands_clicked_begin()));
-//    connect(but_hands[2], SIGNAL(clicked(bool)), this, SLOT(but_hands_clicked_begin()));
-//    connect(but_hands[3], SIGNAL(clicked(bool)), this, SLOT(but_hands_clicked_begin()));
-//    connect(but_hands[4], SIGNAL(clicked(bool)), this, SLOT(but_hands_clicked_begin()));
-//    connect(but_hands[5], SIGNAL(clicked(bool)), this, SLOT(but_hands_clicked_begin()));
-//    connect(but_hands[6], SIGNAL(clicked(bool)), this, SLOT(but_hands_clicked_begin()));
-//    connect(but_hands[7], SIGNAL(clicked(bool)), this, SLOT(but_hands_clicked_begin()));
-//    connect(but_hands[8], SIGNAL(clicked(bool)), this, SLOT(but_hands_clicked_begin()));
-//    connect(but_hands[9], SIGNAL(clicked(bool)), this, SLOT(but_hands_clicked_begin()));
-
-    // 根据点击次数执行操作
-    connect(&hands_cTime[0], SIGNAL(timeout()), this, SLOT(Button_hands1_clicked()));
-    connect(&hands_cTime[1], SIGNAL(timeout()), this, SLOT(Button_hands2_clicked()));
-    connect(&hands_cTime[2], SIGNAL(timeout()), this, SLOT(Button_hands3_clicked()));
-    connect(&hands_cTime[3], SIGNAL(timeout()), this, SLOT(Button_hands4_clicked()));
-    connect(&hands_cTime[4], SIGNAL(timeout()), this, SLOT(Button_hands5_clicked()));
-    connect(&hands_cTime[5], SIGNAL(timeout()), this, SLOT(Button_hands6_clicked()));
-    connect(&hands_cTime[6], SIGNAL(timeout()), this, SLOT(Button_hands7_clicked()));
-    connect(&hands_cTime[7], SIGNAL(timeout()), this, SLOT(Button_hands8_clicked()));
-    connect(&hands_cTime[8], SIGNAL(timeout()), this, SLOT(Button_hands9_clicked()));
-    connect(&hands_cTime[9], SIGNAL(timeout()), this, SLOT(Button_hands10_clicked()));
 }
 
-void battlewindow::but_hands_clicked_begin()     // 手牌点击开始计时
+void battlewindow::Button_hands_clicked()     // 手牌槽函数：单击打出
 {
     QString btnName = QObject::sender()->objectName();
-    int index = (btnName.mid(btnName.size()-1,1)).toInt();
-    switch(index)
+    unsigned index = (btnName.mid(btnName.size()-1,1)).toInt();  // 获取按钮名（手牌下标）
+
+    if(index > course.return_hands1().size_hands() || index == 0)   // 如果点击的手牌位置没有目标手牌
     {
-    case 1:
+        return; // 结束函数
+    }
+
+    Card out_card = course.return_hands1().out(index);  // 在手牌数组中移出对应卡牌，并返回副本
+
+    update_hands1_image();   // 刷新所有手牌中存在的图片
+    for (unsigned i=course.return_hands1().size_hands()-1; i<10; ++i) // 删除最后一张手牌的图片
     {
-        hands_clicked_time[0]++;
-        hands_cTime[0].start(200);
-        break;
+        but_hands1[i]->setIcon(QIcon());
     }
-    case 2:
-    {
-        hands_clicked_time[1]++;
-        hands_cTime[1].start(200);
-        break;
-    }
-    case 3:
-    {
-        hands_clicked_time[2]++;
-        hands_cTime[2].start(200);
-        break;
-    }
-    case 4:
-    {
-        hands_clicked_time[3]++;
-        hands_cTime[3].start(200);
-        break;
-    }
-    case 5:
-    {
-        hands_clicked_time[4]++;
-        hands_cTime[4].start(200);
-        break;
-    }
-    case 6:
-    {
-        hands_clicked_time[5]++;
-        hands_cTime[5].start(200);
-        break;
-    }
-    case 7:
-    {
-        hands_clicked_time[6]++;
-        hands_cTime[6].start(200);
-        break;
-    }
-    case 8:
-    {
-        hands_clicked_time[7]++;
-        hands_cTime[7].start(200);
-        break;
-    }
-    case 9:
-    {
-        hands_clicked_time[8]++;
-        hands_cTime[8].start(200);
-        break;
-    }
-    case 0:
-    {
-        hands_clicked_time[9]++;
-        hands_cTime[9].start(200);
-    }
-    }
+
+    // 将手牌放入战场
+    course.return_venue1().add(out_card);
+    // 刷新场上图片
+    update_minions1_image();
 }
-
-void battlewindow::Button_hands1_clicked()     // 手牌1
-{
-    hands_cTime[0].stop();
-    if(1 == hands_clicked_time[0]){
-        // 单击响应
-        // 显示详情
-    }
-    else if(2 <= hands_clicked_time[0])
-    {
-        // 双击出牌
-
-    }
-    hands_clicked_time[0]=0;    // 重置计数器
-}
-
-void battlewindow::Button_hands2_clicked()     // 手牌2
-{
-    hands_cTime[1].stop();
-    if(1 == hands_clicked_time[1]){
-        // 单击响应
-        // 显示详情
-    }
-    else if(2 <= hands_clicked_time[1])
-    {
-        // 双击出牌
-
-    }
-    hands_clicked_time[0]=0;    // 重置计数器
-}
-
-void battlewindow::Button_hands3_clicked()     // 手牌3
-{
-    hands_cTime[2].stop();
-    if(1 == hands_clicked_time[2]){
-        // 单击响应
-        // 显示详情
-    }
-    else if(2 <= hands_clicked_time[2])
-    {
-        // 双击出牌
-
-    }
-    hands_clicked_time[0]=0;    // 重置计数器
-}
-
-void battlewindow::Button_hands4_clicked()     // 手牌4
-{
-    hands_cTime[3].stop();
-    if(1 == hands_clicked_time[3]){
-        // 单击响应
-        // 显示详情
-    }
-    else if(2 <= hands_clicked_time[3])
-    {
-        // 双击出牌
-
-    }
-    hands_clicked_time[0]=0;    // 重置计数器
-}
-
-void battlewindow::Button_hands5_clicked()     // 手牌5
-{
-    hands_cTime[4].stop();
-    if(1 == hands_clicked_time[4]){
-        // 单击响应
-        // 显示详情
-    }
-    else if(2 <= hands_clicked_time[4])
-    {
-        // 双击出牌
-
-    }
-    hands_clicked_time[0]=0;    // 重置计数器
-}
-
-void battlewindow::Button_hands6_clicked()     // 手牌6
-{
-    hands_cTime[5].stop();
-    if(1 == hands_clicked_time[5]){
-        // 单击响应
-        // 显示详情
-    }
-    else if(2 <= hands_clicked_time[5])
-    {
-        // 双击出牌
-
-    }
-    hands_clicked_time[0]=0;    // 重置计数器
-}
-
-void battlewindow::Button_hands7_clicked()     // 手牌7
-{
-    hands_cTime[6].stop();
-    if(1 == hands_clicked_time[6]){
-        // 单击响应
-        // 显示详情
-    }
-    else if(2 <= hands_clicked_time[6])
-    {
-        // 双击出牌
-
-    }
-    hands_clicked_time[0]=0;    // 重置计数器
-}
-
-void battlewindow::Button_hands8_clicked()     // 手牌8
-{
-    hands_cTime[7].stop();
-    if(1 == hands_clicked_time[7]){
-        // 单击响应
-        // 显示详情
-    }
-    else if(2 <= hands_clicked_time[7])
-    {
-        // 双击出牌
-
-    }
-    hands_clicked_time[0]=0;    // 重置计数器
-}
-
-void battlewindow::Button_hands9_clicked()     // 手牌9
-{
-    hands_cTime[8].stop();
-    if(1 == hands_clicked_time[8]){
-        // 单击响应
-        // 显示详情
-    }
-    else if(2 <= hands_clicked_time[8])
-    {
-        // 双击出牌
-
-    }
-    hands_clicked_time[0]=0;    // 重置计数器
-}
-
-void battlewindow::Button_hands10_clicked()     // 手牌10
-{
-    hands_cTime[9].stop();
-    if(1 == hands_clicked_time[9]){
-        // 单击响应
-        // 显示详情
-    }
-    else if(2 <= hands_clicked_time[9])
-    {
-        // 双击出牌
-
-    }
-    hands_clicked_time[0]=0;    // 重置计数器
-}
-
 /*************************************** 工具函数 *************************************************/
-void battlewindow::update_hands_image(int page)    // 刷新手牌图片：打出和加入时刷新
+void battlewindow::update_hero() // 初始化英雄图片
 {
-    page -= 1;     // 修正UI位置 与 数组下标偏差
-
     // 根据 card_id使用对应图片初始化
     QIcon myicon; //新建QIcon对象
 
+    std::string url;    // 保存图片地址
     // (course.return_hands1().return_card(page)) course->hands->card，得到卡牌
     // 使用卡牌类的函数得到卡牌ID
     // 转换成 string 以拼接字符串
-    std::string url = ":/image/initial/src/image/" + (course.return_hands1().return_card(page)).return_id().toStdString() + ".png";   // 拼接地址
+
+    std::string name = "HERO_06";
+    url = ":/image/initial/src/image/" + name + ".png";   // 拼接地址
     // string.c_str()将 string转换成 c字符串
     myicon.addFile(tr(url.c_str()));    // 让QIcon对象指向想要的图标
 
-    but_hands[page]->setIcon(myicon);  // 给按钮添加图标
-    but_hands[page]->setIconSize(QSize(51,81));  // 设置图片大小
+    ui->pushButton_hero1->setIcon(myicon);  // 给按钮添加图标
+    ui->pushButton_hero1->setIconSize(QSize(51,91));  // 设置图片大小
+
+    ui->pushButton_hero2->setIcon(myicon);  // 给按钮添加图标
+    ui->pushButton_hero2->setIconSize(QSize(51,91));  // 设置图片大小
 }
 
+void battlewindow::update_hands1_image()    // 刷新己方手牌图片：打出和加入时刷新
+{
+    // 根据 card_id使用对应图片初始化
+    QIcon myicon; //新建QIcon对象
+    QString url;    // 保存图片地址
+    QString name;   // 保存图片名
+
+    // 使用卡牌类的函数得到卡牌ID
+    // 转换成 string 以拼接字符串
+    for(unsigned i=0; i<course.return_hands1().size_hands(); ++i)
+    {
+        name = (course.return_hands1().return_card(i)).return_id() + ".png";   // 获取图片名
+        url = ":/image/initial/src/image/" + name;   // 拼接地址
+        // string.c_str()将 string转换成 c字符串
+        myicon.addFile(url);    // 让QIcon对象指向想要的图标
+
+        but_hands1[i]->setIcon(myicon);  // 给按钮添加图标
+        but_hands1[i]->setIconSize(QSize(51,81));  // 设置图片大小
+    }
+
+    // 刷新牌库和手牌悬浮信息
+    but_card_sets[0]->setToolTip("牌库剩余卡牌：" + QString::number(course.return_card_set1().size_card_set()));
+}
+
+void battlewindow::update_hands2_image()    // 刷新敌方手牌图片 缺少卡背图片
+{
+//    // 根据 card_id使用对应图片初始化
+//    QIcon myicon; //新建QIcon对象
+
+//    std::string url;    // 保存图片地址
+//    std::string name;
+//    // (course.return_hands1().return_card(page)) course->hands->card，得到卡牌
+//    // 使用卡牌类的函数得到卡牌ID
+//    // 转换成 string 以拼接字符串
+//    for(unsigned i=0; i<course.return_hands1().return_counter_hands(); ++i)
+//    {
+//        name = ".png";   // 卡背图案名
+//        url = ":/image/initial/src/image/" + name;   // 拼接地址
+//        // string.c_str()将 string转换成 c字符串
+//        myicon.addFile(tr(url.c_str()));    // 让QIcon对象指向想要的图标
+
+//        but_hands2[i]->setIcon(myicon);  // 给按钮添加图标
+//        but_hands2[i]->setIconSize(QSize(51,81));  // 设置图片大小
+//    }
+
+//    // 刷新敌方牌库剩余卡牌文本（悬浮）
+//    but_card_sets[1]->setToolTip("剩余卡牌：" + QString::number(course.return_card_set2().return_counter_card_set()));
+}
+
+void battlewindow::update_minions1_image()  // 刷新己方随从图片
+{
+    // 根据 card_id使用对应图片初始化
+    QIcon myicon; //新建QIcon对象
+
+    QString url;    // 保存图片地址
+    QString name;
+    // (course.return_hands1().return_card(page)) course->hands->card，得到卡牌
+    // 使用卡牌类的函数得到卡牌ID
+    // 转换成 string 以拼接字符串
+    for(unsigned i=0; i<course.return_venue1().size_venue(); ++i)
+    {
+        name = (course.return_venue1().return_minion(i)).return_id() + ".png";   // 获取图片名
+        url = ":/image/cards/classic/400px-Art_" + name;   // 拼接地址
+        // string.c_str()将 string转换成 c字符串
+        myicon.addFile(url);    // 让QIcon对象指向想要的图标
+
+        but_minon1[i]->setIcon(myicon);  // 给按钮添加图标
+        but_minon1[i]->setIconSize(QSize(51,81));  // 设置图片大小
+    }
+}
+
+void battlewindow::update_minions2_image()  // 刷新敌方随从图片
+{
+
+}

@@ -17,9 +17,7 @@ public:
     Widget(QWidget *parent = nullptr);
     ~Widget();
 
-private slots:
-
-    void on_pushButton_clicked();
+    void mousePressEvent(QMouseEvent *e);
 
 private:
     Ui::Widget *ui;
