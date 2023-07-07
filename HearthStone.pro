@@ -1,9 +1,9 @@
 QT      += core gui
 QT      += sql
+QT      += network
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++17
-# CONFIG += resources_big
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
@@ -23,7 +23,7 @@ SOURCES += \
     main.cpp \
     module/keyword.cpp \
     module/skill.cpp \
-    sql.cpp \
+    server/server.cpp \
     ui/auto/autowindow.cpp \
     ui/battle/battlewindow.cpp \
     ui/battle/defeatwindow.cpp \
@@ -52,6 +52,7 @@ HEADERS += \
     log/log_battle.h \
     module/keyword.h \
     module/skill.h \
+    server/server.h \
     ui/auto/autowindow.h \
     ui/battle/battlewindow.h \
     ui/battle/defeatwindow.h \

@@ -6,8 +6,6 @@
 
 #include <QCryptographicHash>   // 哈希加密
 
-#include <QSpacerItem>  // 弹簧
-
 User_login::User_login(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::User_login)
@@ -35,13 +33,25 @@ void User_login::pushButton_login_clicked() // 登录
     QString captcha = lineEdit_captcha->text();
 
     // 检查语法错误，弹出提示
+    if(account == "")
+    {
+        // 账号为空
+    }
+    else if(password == "")
+    {
+        // 用户名为空
+    }
+    else if(captcha == "")
+    {
+        // 密码为空
+    }
 
     // 对密码进行加密
     QByteArray byteArray = password.toLatin1(); // 将 QString转换成 QByteArray
     QByteArray hash = QCryptographicHash::hash(byteArray, QCryptographicHash::Md5);    // 进行加密后返回一个 QByteArray 对象
     QString password_md5 = hash.toHex();    // 转换成十六进制数，并用 QString保存
 
-    switch (user.login(account, password_md5), captcha)  // 调用登录函数，根据返回值确定动作
+    switch(user.login(account, password_md5, captcha))  // 调用登录函数，根据返回值确定动作
     {
     case 1:
         // 账号不存在，弹出提示
@@ -58,25 +68,24 @@ void User_login::pushButton_login_clicked() // 登录
         mainWindow *main = new mainWindow;
         main->show();
     }
-
 }
 
 void User_login::pushButton_enroll_clicked()   // 注册
 {
     this->close();
-    // 打开注册界面
     User_enroll *w = new User_enroll;
     w->show();
 }
 
 void User_login::pushButton_cancel_clicked()    // 取消
 {
-    this->close();  // 关闭当前页：退出程序
+    this->close();
+    exit(-1);  // 关闭当前页：退出程序
 }
 
 void User_login::add_ui()  // 添加 UI
 {
-    vBoxLayout_account = new QVBoxLayout;  // 全局垂直布局
+    vBoxLayout_account = new QVBoxLayout(this);  // 全局垂直布局
 
     // 账号
     hBoxLayout_accout = new QHBoxLayout;   // 账号水平布局
@@ -114,15 +123,14 @@ void User_login::add_ui()  // 添加 UI
 
     // 登录，注册，取消按钮
     hBoxLayout_ptn = new QHBoxLayout;  // 按钮区布局
-    pushButton_cancel = new QPushButton;
+    pushButton_cancel = new QPushButton(this);
     pushButton_cancel->setText("取消");
-    pushButton_enroll = new QPushButton;
+    pushButton_enroll = new QPushButton(this);
     pushButton_enroll->setText("注册");
-    pushButton_login = new QPushButton;
+    pushButton_login = new QPushButton(this);
     pushButton_login->setText("登录");
-    QSpacerItem *spacerItem_r = new QSpacerItem(30, 10);  // 一个长度为 30的弹簧
-    QSpacerItem *spacerItem_l = new QSpacerItem(30, 10);  // 一个长度为 30的弹簧
-
+    spacerItem_r = new QSpacerItem(30, 10);  // 一个长度为 30的弹簧
+    spacerItem_l = new QSpacerItem(30, 10);  // 一个长度为 30的弹簧
     hBoxLayout_ptn->addWidget(pushButton_login);
     hBoxLayout_ptn->addItem(spacerItem_r);    // 添加弹簧到布局
     hBoxLayout_ptn->addWidget(pushButton_enroll);
@@ -135,7 +143,15 @@ void User_login::add_ui()  // 添加 UI
     vBoxLayout_account->addLayout(hBoxLayout_password);
     vBoxLayout_account->addLayout(hBoxLayout_captcha);
     vBoxLayout_account->addLayout(hBoxLayout_ptn);
-    QSpacerItem *spacerItem_bottom = new QSpacerItem(30, 10);  // 一个长度为 30的弹簧
+    spacerItem_bottom = new QSpacerItem(30, 10);  // 一个长度为 30的弹簧
     vBoxLayout_account->addItem(spacerItem_bottom);
+
     this->setLayout(vBoxLayout_account);    // 将布局提升为全局
+
+    setTabOrder(lineEdit_accont, lineEdit_password);
+    setTabOrder(lineEdit_password, lineEdit_captcha);
+    setTabOrder(lineEdit_captcha, pushButton_new_captcha);
+    setTabOrder(pushButton_new_captcha, pushButton_login);
+    setTabOrder(pushButton_login, pushButton_enroll);
+    setTabOrder(pushButton_enroll, pushButton_cancel);
 }

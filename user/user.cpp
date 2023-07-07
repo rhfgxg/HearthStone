@@ -21,53 +21,54 @@ User::User()
 
 bool User::enroll(QString account, QString name, QString password)   // 用户注册：返回 0成功，1账号错误
 {
-    user_name = name;
-    user_password = password;
-    user_account = account;
-
     // 创建用户ID
     user_id = "root";
+    // 账号，用户名，密码
+    user_account = account;
+    user_name = name;
+    user_password = password;   // 123456：e10adc3949ba59abbe56e057f20f883e
+    // 金币，粉尘
+    int coins = 0;
+    int card_splinter = 0;
 
     // 插入数据库
-    QString str = QString("insert into career(user_id, user_account, user_name, user_password) values('%1', '%2', '%3', '%4')").arg(user_id, user_account, user_name, user_password);
+    QString str = QString("insert into users(user_id, user_account, user_name, user_password, coins, card_splinter)"
+                          "values('%1', '%2', '%3', '%4', '%5', '%6')")
+            .arg(user_id, user_account, user_name, user_password).arg(coins).arg(card_splinter);
     QSqlQuery query;
-    query.exec(str);
+
+    if (!query.exec(str))
+    {
+        // 执行不成功，返回 false
+        return false;
+    }
 
     return true;
 }
 
-int User::login(QString account, QString password, QString captcha)   // 用户登录：返回 0成功，1账号不存在，2密码错误，3验证码错误，4验证码超时
+int User::login(QString account, QString password, QString captcha)   // 用户登录：返回 0成功，1账号不存在，2密码错误，3验证码错误
 {
-    // 使用账号查用户表
-    if(account == "")    // 检查待查询的是否是空
+    // 从服务器获取验证码
+    if (captcha == "")
     {
-        return 1;   // 返回账号不存在
-    }
-    else if(password == "")
-    {
-        return 2;   // 返回密码错误
-    }
-    else if(captcha == "")
-    {
+        // 如果验证码错误
         return 3;
     }
 
-    QString str = QString("select * from user where user_account = '%1' ").arg(account);
+    // 使用 用户账号 查 users表
+    QString str = QString("select * from users where user_account = '%1' ").arg(account);
     QSqlQuery query;
-    qDebug() << query.exec(str);    // 返回是否 成功执行查询语句
+    query.exec(str);
 
-    query.next();
-
-    if(query.value(0) == "")
+    if (!query.next())
     {
+        // 如果查询不成功
         return 1;   // 返回账号不存在
     }
-
-    if(query.value(2) != password)
+    else if (query.value(3) != password)
     {
         return 2;   // 返回密码错误
     }
-
 
     // 如果登录成功
     return 0;

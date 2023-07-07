@@ -46,13 +46,13 @@ private slots:
     void on_pushButton_setting_clicked();   // 设置按钮
 
 private:
-    Ui::battlewindow *ui;
     QPushButton* but_card_sets[2];     // 牌库按钮数组
     QPushButton* but_minon1[7];         // 己方场上随从
     QPushButton* but_minon2[7];         // 敌方场上随从
     QPushButton* but_hands1[10];        // 己方手牌按钮
     QPushButton* but_hands2[10];        // 己方手牌按钮
 
+    Ui::battlewindow *ui;
 
     Course course;    // 创建游戏进程
 

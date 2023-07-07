@@ -1,26 +1,27 @@
- #include "ui/widget.h"
-//#include "card/card.h"
+#include "ui/widget.h"
+#include "server/server.h"
+
 #include <QApplication>
-
-#include <QDebug>   // 这里的作用是在终端输出信息
+#include <QDebug>
 #include <QString>
-
 // 数据库相关
 #include <QtSql>
-#include <QSqlDatabase> // 数据库头文件
-#include <QSqlQuery>    // sql查询
-#include <QSqlTableModel>   // 用来显示数据库中数据表的数据，实现对数据的编辑、插入、删除等操作。实现数据的排序和过滤
-#include <QSqlError>    // 处理 sql 报错信息
+#include <QSqlDatabase>
+#include <QSqlQuery>
+#include <QSqlTableModel>
+#include <QSqlError>
 
 void sql_link();
+void server();
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);     // 软件生命进程
+    QApplication a(argc, argv);
 
-    sql_link();     // 连接数据库
+    sql_link();
+//    server();
 
-    Widget w;       // UI界面
+    Widget w;
     w.show();
 
     return a.exec();
@@ -29,19 +30,24 @@ int main(int argc, char *argv[])
 void sql_link()
 {
     QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
-    db.setHostName("127.0.0.1");  // 连接本地主机
-    db.setPort(3306);   // 端口
-    db.setDatabaseName("HearthStone");    // 数据库名称
-    db.setUserName("root");    // 登陆数据库的用户名
-    db.setPassword("159357");   // 登陆数据库的用户密码
+    db.setHostName("127.0.0.1");
+    db.setPort(3306);
+    db.setDatabaseName("HearthStone");
+    db.setUserName("root");
+    db.setPassword("159357");
 
-    bool ok = db.open();    // ·获取是否打开
-    if (ok)
+    if (!(db.open()))
     {
+        qDebug()<<"打开失败："<<db.lastError().text();
+    }
+}
 
-    }
-    else
-    {
-        qDebug()<<"打开失败："<<db.lastError().text(); // 返回数据库报错的原因
-    }
+void server()
+{
+    Server a;
+    QString addr("127.0.0.1");
+    int port = 8888;
+    a.on_Connect(addr, port);    // 链接:addr是ip，port是端口
+    a.on_Send();    // 发送消息
+//    a.on_DisConnect();    // 断开链接
 }

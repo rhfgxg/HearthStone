@@ -55,17 +55,19 @@ private slots:
     void Button_card8_clicked();     // 卡牌8按钮响应
 
 private:
-    Ui::collectionWindow *ui;
     QPushButton * butCard[8];   // 保存八个卡牌按钮
+    QPushButton * butCards[30]; // 保存卡组内的按
+
+    Ui::collectionWindow *ui;
+
     int page;   // 页面计数器
     int m_clicked_time[8];     // 点击次数
     QTimer m_cTime[8];      // 计时器
 
     std::vector<Card> card;    //用来存储 所有card
 
-    QPushButton * butCards[30]; // 保存卡组内的按钮
-    std::vector<QString> text;   // 保存 30个按钮的文本
     Cards cards;     // 卡组对象
+    std::vector<QString> text;   // 保存 30个按钮的文本
 };
 
 #endif // COLLECTIONWINDOW_H

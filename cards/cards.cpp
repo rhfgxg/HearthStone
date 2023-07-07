@@ -170,17 +170,8 @@ void Cards::save()   // 将卡组存入数据库
     new_id();   // 生成卡组ID
 
     QSqlQuery query;
-    // 插入语法
-    // QString("insert into 表名(字段1, 字段2) values('%1', '%2')").arg(变量1).arg(变量2)
+    // 插入
     QString str = QString("insert into cards"
-                          "("
-                          "cards_id, cards_name, career, "
-                          "card1, card2, card3, card4, card5, card6, "
-                          "card7, card8, card9, card10, card11, card12, "
-                          "card13, card14, card15, card16, card17, card18, "
-                          "card19, card20, card21, card22, card23, card24, "
-                          "card25, card26, card27, card28, card29, card30"
-                          ") "
                           "values"
                           "("
                           "'%1', '%2', '%3', "

@@ -10,10 +10,11 @@
 // 用户注册
 User_enroll::User_enroll(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::User_enroll)
+        ui(new Ui::User_enroll)
 {
     ui->setupUi(this);
-    add_ui();
+
+    add_ui();   // 添加 UI
 
     connect(pushButton_enroll, SIGNAL(clicked()), this, SLOT(pushButton_enroll_clicked())); // 注册
     connect(pushButton_cancel, SIGNAL(clicked()), this, SLOT(pushButton_cancel_clicked())); // 取消
@@ -30,15 +31,32 @@ void User_enroll::pushButton_enroll_clicked()   // 注册
     QString account = lineEdit_accont->text();
     QString name = lineEdit_name->text();
     QString password = lineEdit_password->text();
+    QString password_again = lineEdit_password_again->text();
 
     // 检查错误，弹出提示
+    if(account == "")
+    {
+        // 账号为空
+    }
+    else if(name == "")
+    {
+        // 用户名为空
+    }
+    else if(password == "")
+    {
+        // 密码为空
+    }
+    else if(password_again == "")
+    {
+        // 再次输入密码为空
+    }
 
     // 对密码进行加密
     QByteArray byteArray = password.toLatin1(); // 将 QString转换成 QByteArray
     QByteArray hash = QCryptographicHash::hash(byteArray, QCryptographicHash::Md5);    // 进行加密后返回一个 QByteArray 对象
     QString password_md5 = hash.toHex();    // 转换成十六进制数，并用 QString保存
 
-    if (user.enroll(account, name, password_md5))  // 调用登录函数，根据返回值确定动作
+    if (user.enroll(account, name, password_md5))  // 调用函数，根据返回值确定动作
     {
         // 如果没有错误
         this->close();
@@ -57,7 +75,7 @@ void User_enroll::pushButton_cancel_clicked()   // 取消
 
 void User_enroll::add_ui()  // 添加UI
 {
-    vBoxLayout_account = new QVBoxLayout;  // 全局垂直布局
+    vBoxLayout_account = new QVBoxLayout(this);  // 全局垂直布局
 
     // 账号
     hBoxLayout_accout = new QHBoxLayout;   // 账号水平布局
@@ -116,9 +134,9 @@ void User_enroll::add_ui()  // 添加UI
 
     // 注册，取消按钮
     hBoxLayout_ptn = new QHBoxLayout;  // 按钮区布局
-    pushButton_cancel = new QPushButton;
+    pushButton_cancel = new QPushButton(this);
     pushButton_cancel->setText("取消");
-    pushButton_enroll = new QPushButton;
+    pushButton_enroll = new QPushButton(this);
     pushButton_enroll->setText("注册");
     QSpacerItem *spacerItem_ptn = new QSpacerItem(30, 10);  // 一个长度为 30的弹簧
     hBoxLayout_ptn->addWidget(pushButton_enroll);
@@ -136,4 +154,13 @@ void User_enroll::add_ui()  // 添加UI
     QSpacerItem *spacerItem_bottom = new QSpacerItem(30, 10);  // 一个长度为 30的弹簧
     vBoxLayout_account->addItem(spacerItem_bottom);
     this->setLayout(vBoxLayout_account);    // 将布局提升为全局
+
+    // 设置tab
+    setTabOrder(lineEdit_accont, lineEdit_name);
+    setTabOrder(lineEdit_name, lineEdit_password);
+    setTabOrder(lineEdit_password, lineEdit_password_again);
+    setTabOrder(lineEdit_password_again, lineEdit_captcha);
+    setTabOrder(lineEdit_captcha, pushButton_new_captcha);
+    setTabOrder(pushButton_new_captcha, pushButton_enroll);
+    setTabOrder(pushButton_enroll, pushButton_cancel);
 }
