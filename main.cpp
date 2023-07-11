@@ -11,15 +11,17 @@
 #include <QSqlTableModel>
 #include <QSqlError>
 
+Server a;
+
 void sql_link();
-void server();
+void server_link();
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
     sql_link();
-//    server();
+    server_link();
 
     Widget w;
     w.show();
@@ -42,12 +44,9 @@ void sql_link()
     }
 }
 
-void server()
+void server_link()
 {
-    Server a;
-    QString addr("127.0.0.1");
+    QString addr("127.0.1.1");
     int port = 8888;
     a.on_Connect(addr, port);    // 链接:addr是ip，port是端口
-    a.on_Send();    // 发送消息
-//    a.on_DisConnect();    // 断开链接
 }

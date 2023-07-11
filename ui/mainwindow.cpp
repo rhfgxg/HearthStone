@@ -5,8 +5,11 @@
 #include "ui/battle/battlewindow.h"    // 对战模式界面
 #include "ui/collection/collectionwindow.h"     // 收藏界面
 #include "ui/settingAndFriend/friendwindow.h"   // 好友界面
+#include "server/server.h"  // 服务器
 
 #include <QScreen>  // 根据屏幕比例设置窗口大小
+
+extern Server a;
 
 mainWindow::mainWindow(QWidget *parent) :
     QWidget(parent),
@@ -52,6 +55,9 @@ void mainWindow::on_pushButton_Brawl_clicked()      // 乱斗模式按钮
 {
     autoWindow *autoWin = new autoWindow;
     autoWin->show();
+
+    QString msg = "乱斗#";
+    a.on_Send(msg);
 }
 
 void mainWindow::on_pushButton_collection_clicked()     // 收藏按钮

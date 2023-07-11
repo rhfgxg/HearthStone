@@ -1,6 +1,7 @@
 QT      += core gui
-QT      += sql
 QT      += network
+QT      += sql
+
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++17
@@ -23,6 +24,7 @@ SOURCES += \
     main.cpp \
     module/keyword.cpp \
     module/skill.cpp \
+    server/sendstruct.cpp \
     server/server.cpp \
     ui/auto/autowindow.cpp \
     ui/battle/battlewindow.cpp \
@@ -52,6 +54,7 @@ HEADERS += \
     log/log_battle.h \
     module/keyword.h \
     module/skill.h \
+    server/sendstruct.h \
     server/server.h \
     ui/auto/autowindow.h \
     ui/battle/battlewindow.h \

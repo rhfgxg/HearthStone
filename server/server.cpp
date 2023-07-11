@@ -4,7 +4,7 @@
 
 Server::Server()
 {
-    m_tcpSocket = new QTcpSocket(this);
+    m_tcpSocket = new QTcpSocket();
 
     connect(m_tcpSocket,&QTcpSocket::connected,this,&Server::onConnected);
     connect(m_tcpSocket,&QTcpSocket::disconnected,this,&Server::onDisConnected);
@@ -23,16 +23,12 @@ void Server::on_Connect(QString addr, qint16 port)    // 链接服务器:addr是
     qDebug() << "服务器" << addr << ":" << port;
 }
 
-void Server::on_Send()    // 发送按钮
+void Server::on_Send(QString msg)    // 发送信息
 {
-    QString msg = "下发内容";
-
-    qDebug() << msg;
-
     // 执行下发
     QByteArray str = msg.toUtf8();
     str.append('\n');
-    m_tcpSocket->write(str);
+    qDebug() << m_tcpSocket->write(str);
 }
 
 void Server::on_DisConnect()    // 断开连接
@@ -51,20 +47,21 @@ void Server::onConnected()    // 得到服务器链接结果
     qDebug() << ("端口: " + QString::number(m_tcpSocket->peerPort()));
 }
 
-void Server::onDisConnected()    // 得到服务器链接结果
+void Server::onDisConnected()    // 断开服务器链接
 {
     qDebug() << ("**已断开服务器");
 }
 
 void Server::onStateChanged(QAbstractSocket::SocketState)    // 链接状态修改
 {
-
+    qDebug("状态修改");
 }
 
-void Server::onReadyRead()    // 准备读取
+void Server::onReadyRead()    // 接受信息
 {
     while(m_tcpSocket->canReadLine())
     {
-        qDebug() << ("[in] "+m_tcpSocket->readLine());
+        QString in = m_tcpSocket->readLine();
+        qDebug() << ("[in]：" + in);
     }
 }

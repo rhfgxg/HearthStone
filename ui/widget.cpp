@@ -1,10 +1,10 @@
 #include "ui/widget.h"
 #include "ui_widget.h"
 
-#include "ui/settingAndFriend/user_login.h"
+//#include "ui/settingAndFriend/user_login.h"
+#include "ui/mainwindow.h"
 
 #include"QMouseEvent"   // 鼠标
-
 #include <QScreen>  // 根据屏幕比例设置窗口大小
 
 // 打开界面
@@ -38,7 +38,8 @@ void Widget::mousePressEvent(QMouseEvent *e)    // 鼠标点击事件
         // 左键按下
         // 打开登录界面，如果登录成功，打开主界面
 
-        User_login *w = new User_login;
+//        User_login *w = new User_login;
+        mainWindow *w = new mainWindow;
         w->show();
 
     }
